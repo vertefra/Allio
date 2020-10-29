@@ -1,7 +1,11 @@
 import { Container, Col, Row, ListGroup, Button } from 'react-bootstrap'
+import Quantity from './Quantity.js'
 
 const Section = ({ sectionItems, sectionName }) => {
-  console.log(sectionItems)
+  const addItemQuantity = ev => {
+    console.log(ev)
+  }
+
   return (
     <Container>
       <Col>
@@ -23,9 +27,19 @@ const Section = ({ sectionItems, sectionName }) => {
                             }`
                           : `$${item.price / 100}`}
                       </Col>
-                      <Col>
-                        <Button variant="outline-primary">Add</Button>
-                      </Col>
+                      <Row>
+                        <Col>
+                          <Button
+                            variant="outline-primary"
+                            onClick={addItemQuantity}
+                          >
+                            Add
+                          </Button>
+                        </Col>
+                        <Col>
+                          <Quantity id="" />
+                        </Col>
+                      </Row>
                     </Row>
                   </ListGroup.Item>
                   <ListGroup.Item>
