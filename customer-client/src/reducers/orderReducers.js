@@ -1,11 +1,17 @@
-export const orderReducers = (state = { order: [] }, action) => {
+import { defaultOrderState } from '../states.js'
+
+export const orderReducers = (state = defaultOrderState, action) => {
   switch (action.type) {
     case 'SET_ORDER':
       return { ...state, ...action.payload }
-  }
 
-  switch (action.type) {
     case 'CLEAR_ORDER':
-      return
+      return {}
+
+    case 'UPDATE_ORDER':
+      return { ...state, ...action.payload }
+
+    default:
+      return state
   }
 }

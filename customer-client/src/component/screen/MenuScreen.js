@@ -1,20 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
 import Section from '../layout/menu/Section'
+import { loadMenu } from '../../actions/menuActions'
 
 const MenuScreen = () => {
-  const [menu, setMenu] = useState({})
+  const dispatch = useDispatch()
+
+  const appState = useSelector(state => {
+    return state.appState
+  })
+  const menu = useSelector(state => {
+    return state.menu
+  })
+
+  console.log('MENU => ', menu)
 
   useEffect(() => {
-    ;(async () => {
-      try {
-        const { data } = await axios.get('/api/menu')
-        setMenu({ ...data.menu })
-      } catch (err) {
-        console.log(err)
-      }
-    })()
+    dispatch(loadMenu())
   }, [])
 
   return (

@@ -1,9 +1,12 @@
+import { useState } from 'react'
 import { Container, Col, Row, ListGroup, Button } from 'react-bootstrap'
 import Quantity from './Quantity.js'
 
 const Section = ({ sectionItems, sectionName }) => {
+  const [orderIDS, setOrderIDS] = useState([])
+
   const addItemQuantity = ev => {
-    console.log(ev)
+    setOrderIDS([...setOrderIDS, ev.target.id])
   }
 
   return (
@@ -30,8 +33,9 @@ const Section = ({ sectionItems, sectionName }) => {
                       <Row>
                         <Col>
                           <Button
-                            variant="outline-primary"
+                            id={item.id}
                             onClick={addItemQuantity}
+                            variant="outline-primary"
                           >
                             Add
                           </Button>
