@@ -1,10 +1,12 @@
 export const defaultOrderState = {
-  customerId: undefined,
-  starters: [],
-  main: [],
-  specials: [],
-  beers: [],
-  wines: [],
+  customerId: '',
+  starters: {},
+  main: {},
+  specials: {},
+  beers: {},
+  wines: {},
+  totalPrice: 0,
+  payed: false,
 }
 
 export const defaultAppState = {

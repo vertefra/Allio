@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios'
 
 import Section from '../layout/menu/Section'
 import { loadMenu } from '../../actions/menuActions'
@@ -14,8 +13,6 @@ const MenuScreen = () => {
   const menu = useSelector(state => {
     return state.menu
   })
-
-  console.log('MENU => ', menu)
 
   useEffect(() => {
     dispatch(loadMenu())

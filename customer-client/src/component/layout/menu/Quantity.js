@@ -1,9 +1,8 @@
 import { useState } from 'react'
-const Quantity = () => {
-  const [itemQuantity, setItemQuantity] = useState('')
+const Quantity = ({ quantity }) => {
   return (
     <div>
-      <input type="number"></input>
+      <input type="number" value={quantity} readOnly></input>
     </div>
   )
 }
