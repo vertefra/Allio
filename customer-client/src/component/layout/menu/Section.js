@@ -14,16 +14,17 @@ const Section = ({ sectionItems, sectionName }) => {
     return state.appState
   })
 
-  const orderState = useSelector(state => {
-    return state.order
-  })
+  const { loading, error } = appState
+
+  // const orderState = useSelector(state => {
+  //   return state.order
+  // })
 
   const addItemQuantity = ev => {
     const item = ev.target.name
     const price = parseInt(ev.target.dataset.price)
 
     const totalPrice = orderItems.totalPrice + price
-    console.log(totalPrice)
 
     const quantity = orderItems[sectionName][item] + 1 || 1
     setOrderItems({
@@ -35,20 +36,22 @@ const Section = ({ sectionItems, sectionName }) => {
 
   const subItemQuantity = ev => {
     const item = ev.target.name
-    const price = ev.target.dataset.price
+    let price = parseInt(ev.target.dataset.price)
 
+    price = orderItems[sectionName][item] > 0 ? price : 0
     let quantity = orderItems[sectionName][item] - 1 || 0
+
+    const totalPrice = orderItems.totalPrice - price
     quantity = quantity < 0 ? 0 : quantity
 
     setOrderItems({
       ...orderItems,
       ...(orderItems[sectionName][item] = quantity),
-      totalPrice: orderItems.totalPrice - parseInt(price),
+      totalPrice,
     })
   }
 
   useEffect(() => {
-    console.log(orderItems)
     dispatch(updateOrder(orderItems))
   }, [orderItems])
 
@@ -58,62 +61,72 @@ const Section = ({ sectionItems, sectionName }) => {
 
   return (
     <Container>
-      <Col>
-        <div className={`section ${sectionName}`} key={sectionName}>
-          <h1>{sectionName}</h1>
-        </div>
-        <ListGroup variant="flush">
-          {sectionItems.length > 0 &&
-            sectionItems.map((item, idx) => {
-              return (
-                <div key={idx}>
-                  <ListGroup.Item variant="dark" key={item.id}>
-                    <Row>
-                      <Col>
-                        {item.title}
-                        {sectionName === 'wines'
-                          ? `$${item.bottlePrice / 100}/$${
-                              item.glassPrice / 100
-                            }`
-                          : `$${item.price / 100}`}
-                      </Col>
+      {loading ? (
+        <h3> ...Loading </h3>
+      ) : error ? (
+        <h3>{error}</h3>
+      ) : (
+        <Col>
+          <div className={`section ${sectionName}`} key={sectionName}>
+            <h1>{sectionName}</h1>
+          </div>
+          <ListGroup variant="flush">
+            {sectionItems.length > 0 &&
+              sectionItems.map((item, idx) => {
+                return (
+                  <div key={idx}>
+                    <ListGroup.Item variant="dark" key={item.id}>
                       <Row>
                         <Col>
-                          <Button
-                            name={item.title}
-                            data-price={item.price || item.glassPrice}
-                            onClick={addItemQuantity}
-                            variant="outline-primary"
-                          >
-                            Add
-                          </Button>
+                          {item.title}
+                          {sectionName === 'wines'
+                            ? `$${item.bottlePrice / 100}/$${
+                                item.glassPrice / 100
+                              }`
+                            : `$${item.price / 100}`}
                         </Col>
-                        <Col>
-                          <Button
-                            name={item.title}
-                            data-price={item.price || item.glassPrice}
-                            onClick={subItemQuantity}
-                            variant="outline-primary"
-                          >
-                            Sub
-                          </Button>
-                        </Col>
-                        <Col>
-                          <Quantity
-                            quantity={orderItems[sectionName][item.title] || 0}
-                          />
-                        </Col>
+                        <Row>
+                          <Col>
+                            <Button
+                              name={item.title}
+                              data-price={item.price || item.glassPrice}
+                              onClick={addItemQuantity}
+                              variant="outline-primary"
+                            >
+                              Add
+                            </Button>
+                          </Col>
+                          <Col>
+                            <Button
+                              name={item.title}
+                              data-price={item.price || item.glassPrice}
+                              onClick={subItemQuantity}
+                              variant="outline-primary"
+                            >
+                              Sub
+                            </Button>
+                          </Col>
+                          <Col>
+                            <Quantity
+                              quantity={
+                                orderItems[sectionName][item.title] || 0
+                              }
+                            />
+                          </Col>
+                        </Row>
                       </Row>
-                    </Row>
-                  </ListGroup.Item>
-                  <ListGroup.Item>
-                    <strong className="description">{item.description}</strong>
-                  </ListGroup.Item>
-                </div>
-              )
-            })}
-        </ListGroup>
-      </Col>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      <strong className="description">
+                        {item.description}
+                      </strong>
+                    </ListGroup.Item>
+                  </div>
+                )
+              })}
+          </ListGroup>
+        </Col>
+      )}
     </Container>
   )
 }

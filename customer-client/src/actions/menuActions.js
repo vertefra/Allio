@@ -1,8 +1,5 @@
 import axios from 'axios'
 
-// import menuReducers from '../reducers/menuReducers'
-// import appStateReducers from '../reducers/appStateReducers'
-
 export const loadMenu = () => async dispatch => {
   dispatch({ type: 'LOADING_TRUE' })
   try {
