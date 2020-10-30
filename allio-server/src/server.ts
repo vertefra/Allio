@@ -1,6 +1,7 @@
 import express from "express"
 import { config, connectDB } from "./config/config"
-import menuRoutes from "./routes/menuRoutes"
+import menuRouter from "./routes/menuRoutes"
+import orderRouter from "./routes/orderRoutes"
 
 const app = express()
 
@@ -14,11 +15,13 @@ connectDB(config)
 
 app.use(express.json())
 
+
 app.get('/', (req, res) => {
   res.send("api running")
 })
 
-app.use('/api/menu', menuRoutes)
+app.use('/api/menu', menuRouter)
+app.use('/api/orders', orderRouter)
 
 app.listen(config.PORT, () => {
   console.log("server listening on port ", config.PORT)
